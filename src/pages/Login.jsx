@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getQuestions } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -25,6 +28,12 @@ class Login extends React.Component {
       return false;
     }
     return true;
+  }
+
+  handlePlay = async () => {
+    const { dispatch, history } = this.props;
+    dispatch(await getQuestions());
+    history.push('/');
   }
 
   render() {
@@ -58,6 +67,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ this.checkInputs() }
+          onClick={ this.handlePlay }
         >
           Play
 
@@ -67,4 +77,9 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default connect()(Login);
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+};
