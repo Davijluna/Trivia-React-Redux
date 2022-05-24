@@ -11,8 +11,8 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case CHANGE_NAME:
-    return { ...state, name: action.payload };
+  case 'GET_QUESTIONS':
+    return { ...state, questions: action.payload };
   default:
     return state;
   }
