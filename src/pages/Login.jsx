@@ -39,7 +39,13 @@ class Login extends React.Component {
 
   handlePlay = async () => {
     const { dispatch, history } = this.props;
+    const { email, name } = this.state;
     dispatch(await getQuestions());
+    const data = { email, name };
+    dispatch({
+      type: 'GET_USER',
+      payload: data,
+    });
     history.push('/');
   }
 
@@ -96,6 +102,12 @@ class Login extends React.Component {
     );
   }
 }
+
+// const mapDispatchToProps = () => ({
+//   dispatchChangeName: (dispatch) => {
+//     dispatch(changeName());
+//   },
+// });
 
 export default connect()(Login);
 

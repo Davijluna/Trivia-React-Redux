@@ -1,5 +1,3 @@
-export const CHANGE_NAME = 'CHANGE_NAME';
-
 const INITIAL_STATE = {
   player: {
     name: 'Player Name',
@@ -13,6 +11,8 @@ const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'GET_QUESTIONS':
     return { ...state, questions: action.payload };
+  case 'GET_USER':
+    return { ...state, player: { ...state.player, name: action.payload.name, gravatarEmail: action.payload.email } };
   default:
     return state;
   }

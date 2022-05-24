@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
-export default class ScreenPlay extends Component {
+export default class Game extends Component {
   componentDidMount() {
     if (!localStorage.getItem('token')) {
       const { history } = this.props;
@@ -12,12 +13,13 @@ export default class ScreenPlay extends Component {
   render() {
     return (
       <div>
-        <div>ScreenPlay</div>
+        <Header />
+        <div>Game</div>
       </div>
     );
   }
 }
 
-ScreenPlay.propTypes = {
+Game.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
