@@ -11,7 +11,9 @@ export default class ScreenPlay extends Component {
 
   render() {
     return (
-      <div>ScreenPlay</div>
+      <div>
+        <div>ScreenPlay</div>
+      </div>
     );
   }
 }

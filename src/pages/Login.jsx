@@ -13,6 +13,13 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem('token')) {
+      const { history } = this.props;
+      history.push('/');
+    }
+  }
+
   // Atualiza o state com o valor do input
   changeInput = ({ target }) => {
     const { name, value } = target;
@@ -34,6 +41,11 @@ class Login extends React.Component {
     const { dispatch, history } = this.props;
     dispatch(await getQuestions());
     history.push('/');
+  }
+
+  handleRedirect = () => {
+    const { history } = this.props;
+    history.push('/config');
   }
 
   render() {
@@ -71,6 +83,14 @@ class Login extends React.Component {
         >
           Play
 
+        </button>
+
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handleRedirect }
+        >
+          Configurações
         </button>
       </div>
     );
