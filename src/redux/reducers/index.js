@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   player: {
-    name: 'Player Name',
-    gravatarEmail: 'player@email.com',
+    name: '',
+    gravatarEmail: '',
     score: 0,
     assertions: 0,
   },
