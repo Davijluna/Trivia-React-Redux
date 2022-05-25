@@ -33,7 +33,7 @@ export const getQuestions = async () => {
     apiQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${await getToken()}`);
     apiQuestionsJson = await apiQuestions.json();
   }
-  console.log(apiQuestionsJson);
+  //console.log(apiQuestionsJson);
   // return apiQuestionsJson;
   return (dispatch) => {
     dispatch(actionGetQuestions(apiQuestionsJson.results));

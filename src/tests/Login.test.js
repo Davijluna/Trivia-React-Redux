@@ -19,7 +19,7 @@ describe('Testes da página de Login', () => {
     localStorage.clear();
     const { history, store } = renderWithRouterAndRedux(<App />);
     const { pathname } = history.location;
-    expect(pathname).toBe('/login');
+    expect(pathname).toBe('/');
 
     const btn_play = screen.getByTestId('btn-play');
     expect(btn_play).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('Testes da página de Login', () => {
   it('testa o botão de configurações', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const { pathname } = history.location;
-    expect(pathname).toBe('/login');
+    expect(pathname).toBe('/');
 
     const btn_Settings = screen.getByTestId('btn-settings');
     userEvent.click(btn_Settings);
@@ -62,10 +62,9 @@ describe('Testes da página de Login', () => {
     const TESTE_STATE = {
       player: {
         name: 'teste teste',
-        gravatarEmail: '',
+        gravatarEmail: 'teste@teste.com',
         score: 0,
         assertions: 0,
-        email: 'teste@teste.com',
       },
     };
 
@@ -80,10 +79,10 @@ describe('Testes da página de Login', () => {
       'https://opentdb.com/api.php?amount=5&token=teste'
     );
 
-    await screen.findByText('ScreenPlay');
+    await screen.findByText('Game');
     expect(store.getState()).toMatchObject(TESTE_STATE);
 
     const { pathname } = history.location;
-    expect(pathname).toBe('/');
+    expect(pathname).toBe('/game');
   });
 });
