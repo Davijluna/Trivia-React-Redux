@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestions } from '../redux/actions';
+import { actionSetUser, getQuestions } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -14,7 +14,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token') && localStorage.getItem('token') !=='') {
       const { history } = this.props;
       history.push('/');
     }
@@ -39,7 +39,9 @@ class Login extends React.Component {
 
   handlePlay = async () => {
     const { dispatch, history } = this.props;
+    const { email, name } = this.state;
     dispatch(await getQuestions());
+    dispatch(actionSetUser({ email, name }));
     history.push('/');
   }
 

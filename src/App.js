@@ -4,7 +4,7 @@ import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
 import Config from './pages/Config';
-import ScreenPlay from './pages/ScreenPlay';
+import ScreenPlay from './pages/Game';
 
 export default function App() {
   return (
