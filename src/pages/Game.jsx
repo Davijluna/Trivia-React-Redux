@@ -7,7 +7,7 @@ class Game extends Component {
   componentDidMount() {
     if (!localStorage.getItem('token')) {
       const { history } = this.props;
-      history.push('/login');
+      history.push('/');
     }
   }
 

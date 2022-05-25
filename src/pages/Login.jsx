@@ -15,7 +15,7 @@ class Login extends React.Component {
   componentDidMount() {
     if (localStorage.getItem('token')) {
       const { history } = this.props;
-      history.push('/');
+      history.push('/game');
     }
   }
 
@@ -45,7 +45,7 @@ class Login extends React.Component {
       type: 'GET_USER',
       payload: data,
     });
-    history.push('/');
+    history.push('/game');
   }
 
   handleRedirect = () => {
@@ -82,7 +82,7 @@ class Login extends React.Component {
         </label>
         <button
           type="button"
-          data-testid=" "
+          data-testid="btn-play"
           disabled={ this.checkInputs() }
           onClick={ this.handlePlay }
         >
