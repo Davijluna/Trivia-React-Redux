@@ -12,7 +12,10 @@ const reducer = (state = INITIAL_STATE, action) => {
   case 'GET_QUESTIONS':
     return { ...state, questions: action.payload };
   case 'GET_USER':
-    return { ...state, player: { ...state.player, name: action.payload.name, gravatarEmail: action.payload.email } };
+    return { ...state,
+      player: { ...state.player,
+        name: action.payload.name,
+        gravatarEmail: action.payload.email } };
   default:
     return state;
   }

@@ -30,19 +30,6 @@ class Header extends React.Component {
           { score }
         </p>
       </div>
-      // <div>
-      //   <img
-      //     data-testid="header-profile-picture"
-      //     src={ ` https://www.gravatar.com/avatar/${image}` }
-      //     alt="avatar"
-      //   />
-      //   <div data-testid="header-player-name">
-      //     { name }
-      //   </div>
-      //   <p data-testid="header-score">
-      //     { score }
-      //   </p>
-      // </div>
     );
   }
 }
@@ -56,8 +43,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {
-  image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
-
+  email: PropTypes.string.isRequired,
 };
