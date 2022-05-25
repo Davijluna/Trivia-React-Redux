@@ -4,7 +4,7 @@ import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
 import Config from './pages/Config';
-import ScreenPlay from './pages/ScreenPlay';
+import Game from './pages/Game';
 
 export default function App() {
   return (
@@ -13,10 +13,9 @@ export default function App() {
         <img src={ logo } className="App-logo" alt="logo" />
         <p>SUA VEZ</p>
         <Switch>
-          <Route exact path="/" component={ ScreenPlay } />
-          <Route exact path="/login" component={ Login } />
+          <Route exact path="/" component={ Login } />
+          <Route exact path="/game" component={ Game } />
           <Route exact path="/config" component={ Config } />
-
         </Switch>
       </header>
     </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestions } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -9,15 +8,7 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      // buttonDisabled: true,
     };
-  }
-
-  componentDidMount() {
-    if (localStorage.getItem('token')) {
-      const { history } = this.props;
-      history.push('/');
-    }
   }
 
   // Atualiza o state com o valor do input
@@ -39,8 +30,13 @@ class Login extends React.Component {
 
   handlePlay = async () => {
     const { dispatch, history } = this.props;
-    dispatch(await getQuestions());
-    history.push('/');
+    const { email, name } = this.state;
+    const data = { email, name };
+    dispatch({
+      type: 'GET_USER',
+      payload: data,
+    });
+    history.push('/game');
   }
 
   handleRedirect = () => {
@@ -75,6 +71,7 @@ class Login extends React.Component {
             onChange={ this.changeInput }
           />
         </label>
+
         <button
           type="button"
           data-testid="btn-play"
@@ -82,13 +79,12 @@ class Login extends React.Component {
           onClick={ this.handlePlay }
         >
           Play
-
         </button>
 
         <button
+          onClick={ this.handleRedirect }
           data-testid="btn-settings"
           type="button"
-          onClick={ this.handleRedirect }
         >
           Configurações
         </button>
