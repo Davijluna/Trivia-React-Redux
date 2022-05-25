@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
-export default class Game extends Component {
+class Game extends Component {
   componentDidMount() {
     if (!localStorage.getItem('token')) {
       const { history } = this.props;
@@ -19,6 +20,14 @@ export default class Game extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  email: state.player.gravatarEmail,
+  name: state.player.name,
+  score: state.player.score,
+});
+
+export default connect(mapStateToProps)(Game);
 
 Game.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,

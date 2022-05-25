@@ -9,7 +9,6 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      // buttonDisabled: true,
     };
   }
 
@@ -42,7 +41,7 @@ class Login extends React.Component {
     const { email, name } = this.state;
     dispatch(await getQuestions());
     const data = { email, name };
-    dispatch({
+    await dispatch({
       type: 'GET_USER',
       payload: data,
     });
@@ -83,7 +82,7 @@ class Login extends React.Component {
         </label>
         <button
           type="button"
-          data-testid="btn-play"
+          data-testid=" "
           disabled={ this.checkInputs() }
           onClick={ this.handlePlay }
         >
@@ -102,12 +101,6 @@ class Login extends React.Component {
     );
   }
 }
-
-// const mapDispatchToProps = () => ({
-//   dispatchChangeName: (dispatch) => {
-//     dispatch(changeName());
-//   },
-// });
 
 export default connect()(Login);
 
