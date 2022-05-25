@@ -15,14 +15,14 @@ const getToken = async () => {
   return apiTokenJson.token;
 };
 
-export const getQuestions = async () => {
+export const getQuestions = async (history) => {
   const ERROR_RESPONSE_TOKEN = 3;
   const ERROR_RESPONSE_NOTFOUND = 4;
 
-  const tokenLocalStorage = localStorage.getItem('token');
   if (!localStorage.getItem('token') || localStorage.getItem('token') === '') {
     await getToken();
   }
+  const tokenLocalStorage = localStorage.getItem('token');
   let apiQuestions = '';
   let apiQuestionsJson = {};
 
@@ -32,6 +32,8 @@ export const getQuestions = async () => {
     apiQuestionsJson.response_code === ERROR_RESPONSE_TOKEN
     || apiQuestionsJson.response_code === ERROR_RESPONSE_NOTFOUND
   ) {
+    localStorage.clear();
+    history.push('/');
     apiQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${await getToken()}`);
     apiQuestionsJson = await apiQuestions.json();
   }
