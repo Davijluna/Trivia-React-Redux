@@ -10,6 +10,8 @@ class Game extends Component {
     this.state = {
       questionsLength: 0,
       currentQuestion: 0,
+      color: '',
+      correctAnswer: '',
     };
   }
 
@@ -20,7 +22,22 @@ class Game extends Component {
     this.setState({ questionsLength: questions.length });
   }
 
+  handleClick = ({ target }, testId) => {
+    console.log(testId);
+    // if (testId.includes('wrong')) {
+    //   this.setState({ color: '' });
+    //   target.className = 'wrongAnswer';
+    // } else {
+    //   this.setState({ color: 'wrongAnswer' });
+    //   target.className = 'correctAnswer';
+    // }
+  };
+
+  // changeBorder = (classItem) => classItem;
+
   randomAlternativas = (incorretas, certa) => {
+    const { color } = this.state;
+
     const response = incorretas.map((alternativa, index) => (
       {
         alternativa,
@@ -30,12 +47,13 @@ class Game extends Component {
     const MAX_LENGTH = 4;
     const number = Math.floor(Math.random() * MAX_LENGTH);
     response.splice(number, 0, certa);
-    response.forEach((item) => console.log(item));
     return response.map((item) => (
       <button
         key={ item.testId }
         data-testId={ item.testId }
         type="button"
+        onClick={ (e) => this.handleClick(e, item.testId) }
+        // className={ color }
       >
         { item.alternativa }
       </button>
