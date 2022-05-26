@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { getQuestions } from '../redux/actions';
+import { getQuestions, addScore } from '../redux/actions';
 
 let downloadTimer;
 
@@ -41,8 +41,31 @@ class Game extends Component {
     return downloadTimer;
   }
 
-  handleClick = () => {
+  handleClick = (testId, difficulty) => {
+    const { dispatch } = this.props;
+    const timer = 15; // Alterar depois para o valor do timer real
     this.setState({ control: true });
+
+    const fixedNumber = 10;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+
+    if (testId.includes('correct')) { // Caso selecione a resposta correta entra no SWITCH abaixo
+      switch (difficulty) {
+      case 'easy':
+        dispatch(addScore(fixedNumber + (timer * easy)));
+        break;
+      case 'medium':
+        dispatch(addScore(fixedNumber + (timer * medium)));
+        break;
+      case 'hard':
+        dispatch(addScore(fixedNumber + (timer * hard)));
+        break;
+      default:
+        return null;
+      }
+    }
   };
 
   // changeBorder = (classItem) => classItem;
@@ -68,7 +91,7 @@ class Game extends Component {
     return correctAnswer;
   };
 
-  randomAlternativas = (incorretas, certa) => {
+  randomAlternativas = (incorretas, certa, difficulty) => {
     const { position, disableButtons } = this.state;
 
     const response = incorretas.map((alternativa, index) => (
@@ -86,7 +109,7 @@ class Game extends Component {
           key={ item.testId }
           data-testid={ item.testId }
           type="button"
-          onClick={ this.handleClick }
+          onClick={ () => this.handleClick(item.testId, difficulty) }
           className={ classNameItem }
           disabled={ disableButtons }
         >
@@ -94,7 +117,7 @@ class Game extends Component {
         </button>
       );
     });
-  }
+  };
 
   handleNext = () => {
     clearInterval(downloadTimer);
@@ -115,12 +138,17 @@ class Game extends Component {
   };
 
   render() {
-    const { questions } = this.props;
+    const { questions, score } = this.props;
     const { questionsLength, currentQuestion, control, counter } = this.state;
     return (
       <div>
         <Header />
         <div>Game</div>
+        <p>
+          Placar:
+          {' '}
+          { score }
+        </p>
         <div>
           { questionsLength > 0
           && (
@@ -140,7 +168,7 @@ class Game extends Component {
                   { alternativa: questions[currentQuestion].correct_answer,
                     testId: 'correct-answer',
                   },
-
+                  questions[currentQuestion].difficulty,
                 ) }
               </div>
             </>
@@ -178,4 +206,5 @@ Game.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   dispatch: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any.isRequired).isRequired,
+  score: PropTypes.number.isRequired,
 };
