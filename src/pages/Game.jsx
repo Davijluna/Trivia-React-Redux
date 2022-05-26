@@ -10,8 +10,8 @@ class Game extends Component {
     this.state = {
       questionsLength: 0,
       currentQuestion: 0,
-      color: '',
-      correctAnswer: '',
+      control: false,
+      position: -1,
     };
   }
 
@@ -19,24 +19,39 @@ class Game extends Component {
     const { dispatch, history } = this.props;
     dispatch(await getQuestions(history));
     const { questions } = this.props;
-    this.setState({ questionsLength: questions.length });
+    const number = this.randomNumber();
+    this.setState({ questionsLength: questions.length, position: number });
   }
 
-  handleClick = ({ target }, testId) => {
-    console.log(testId);
-    // if (testId.includes('wrong')) {
-    //   this.setState({ color: '' });
-    //   target.className = 'wrongAnswer';
-    // } else {
-    //   this.setState({ color: 'wrongAnswer' });
-    //   target.className = 'correctAnswer';
-    // }
+  handleClick = () => {
+    this.setState({ control: true });
   };
 
   // changeBorder = (classItem) => classItem;
 
+  randomNumber = () => {
+    const { position } = this.state;
+    const POSITION_STARTER = -1;
+    if (position === POSITION_STARTER) {
+      const MAX_LENGTH = 4;
+      const number = Math.floor(Math.random() * MAX_LENGTH);
+      return number;
+    }
+    return position;
+  };
+
+  handleClassName = (testId) => {
+    const { control } = this.state;
+    const correctAnswer = 'correctAnswer';
+    const wrongAnswer = 'wrongAnswer';
+
+    if (!control) return 'choiceBtn';
+    if (testId.includes('wrong')) return wrongAnswer;
+    return correctAnswer;
+  };
+
   randomAlternativas = (incorretas, certa) => {
-    const { color } = this.state;
+    const { position } = this.state;
 
     const response = incorretas.map((alternativa, index) => (
       {
@@ -44,26 +59,43 @@ class Game extends Component {
         testId: `wrong-answer-${index}`,
       }
     ));
-    const MAX_LENGTH = 4;
-    const number = Math.floor(Math.random() * MAX_LENGTH);
-    response.splice(number, 0, certa);
-    return response.map((item) => (
-      <button
-        key={ item.testId }
-        data-testId={ item.testId }
-        type="button"
-        onClick={ (e) => this.handleClick(e, item.testId) }
-        // className={ color }
-      >
-        { item.alternativa }
-      </button>
-    ));
+
+    response.splice(position, 0, certa);
+    return response.map((item) => {
+      const classNameItem = this.handleClassName(item.testId);
+      return (
+        <button
+          key={ item.testId }
+          data-testid={ item.testId }
+          type="button"
+          onClick={ this.handleClick }
+          className={ classNameItem }
+        >
+          { item.alternativa }
+        </button>
+      );
+    });
   }
+
+  handleNext = () => {
+    this.setState((prev) => {
+      let nextCurrent;
+      if (prev.currentQuestion < prev.questionsLength - 1) {
+        nextCurrent = prev.currentQuestion + 1;
+      } else {
+        nextCurrent = 0;
+      }
+      return ({
+        control: false,
+        position: -1,
+        currentQuestion: nextCurrent,
+      });
+    });
+  };
 
   render() {
     const { questions } = this.props;
-    const { questionsLength, currentQuestion } = this.state;
-
+    const { questionsLength, currentQuestion, control } = this.state;
     return (
       <div>
         <Header />
@@ -86,10 +118,25 @@ class Game extends Component {
                   { alternativa: questions[currentQuestion].correct_answer,
                     testId: 'correct-answer',
                   },
+
                 ) }
               </div>
             </>
           )}
+        </div>
+        <div>
+          {
+            control
+            && (
+              <button
+                data-testid="btn-next"
+                onClick={ this.handleNext }
+                type="button"
+              >
+                Next
+              </button>
+            )
+          }
         </div>
       </div>
     );
