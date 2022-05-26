@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Hearder from '../components/Header';
 
@@ -12,6 +12,11 @@ class Feedback extends React.Component {
       return 'Could be better...';
     }
     return 'Well Done!';
+  }
+
+  handlePlayAgain = () => {
+    const { history } = this.props;
+    history.push('/');
   };
 
   render() {
@@ -29,6 +34,13 @@ class Feedback extends React.Component {
         <div>
           <span data-testid="feedback-total-question">{ assertions }</span>
         </div>
+        <button
+          data-testid="btn-play-again"
+          onClick={ this.handlePlayAgain }
+          type="button"
+        >
+          Play Again
+        </button>
       </div>
 
     );
@@ -43,6 +55,7 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
