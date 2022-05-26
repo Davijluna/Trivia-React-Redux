@@ -9,17 +9,29 @@ class Feedback extends React.Component {
     history.push('/');
   };
 
+  handleRanking = () => {
+    const { history } = this.props;
+    history.push('/ranking');
+  };
+
   render() {
     return (
       <div>
-        <Header />
         <h1 data-testid="feedback-text">Feedback</h1>
+        <Header />
         <button
           data-testid="btn-play-again"
           onClick={ this.handlePlayAgain }
           type="button"
         >
           Play Again
+        </button>
+        <button
+          data-testid="btn-ranking"
+          onClick={ this.handleRanking }
+          type="button"
+        >
+          Ranking
         </button>
       </div>
     );
