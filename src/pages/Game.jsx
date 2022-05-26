@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions, addScore } from '../redux/actions';
 
+let downloadTimer;
+
 class Game extends Component {
   constructor() {
     super();
@@ -12,20 +14,37 @@ class Game extends Component {
       currentQuestion: 0,
       control: false,
       position: -1,
+      disableButtons: false,
+      counter: 0,
     };
   }
 
   async componentDidMount() {
     const { dispatch, history } = this.props;
-    dispatch(await getQuestions(history));
+    dispatch(await getQuestions(history), this.counter());
     const { questions } = this.props;
     const number = this.randomNumber();
     this.setState({ questionsLength: questions.length, position: number });
   }
 
+  counter = () => {
+    const miliseconds = 1000;
+    const time = { timeleft: 30 };
+    downloadTimer = setInterval(() => {
+      if (time.timeleft === 0) {
+        clearInterval(downloadTimer);
+        this.setState({ disableButtons: true });
+      }
+      this.setState({ counter: time.timeleft });
+      time.timeleft -= 1;
+    }, miliseconds);
+    return downloadTimer;
+  }
+
   handleClick = (testId, difficulty) => {
     const { dispatch } = this.props;
-    const timer = 15; // Alterar depois para o valor do timer real
+    // const timer = 15; // Alterar depois para o valor do timer reall
+    const { counter } = this.state;
     this.setState({ control: true });
 
     const fixedNumber = 10;
@@ -36,13 +55,13 @@ class Game extends Component {
     if (testId.includes('correct')) { // Caso selecione a resposta correta entra no SWITCH abaixo
       switch (difficulty) {
       case 'easy':
-        dispatch(addScore(fixedNumber + (timer * easy)));
+        dispatch(addScore(fixedNumber + (counter * easy)));
         break;
       case 'medium':
-        dispatch(addScore(fixedNumber + (timer * medium)));
+        dispatch(addScore(fixedNumber + (counter * medium)));
         break;
       case 'hard':
-        dispatch(addScore(fixedNumber + (timer * hard)));
+        dispatch(addScore(fixedNumber + (counter * hard)));
         break;
       default:
         return null;
@@ -74,7 +93,7 @@ class Game extends Component {
   };
 
   randomAlternativas = (incorretas, certa, difficulty) => {
-    const { position } = this.state;
+    const { position, disableButtons } = this.state;
 
     const response = incorretas.map((alternativa, index) => (
       {
@@ -93,6 +112,7 @@ class Game extends Component {
           type="button"
           onClick={ () => this.handleClick(item.testId, difficulty) }
           className={ classNameItem }
+          disabled={ disableButtons }
         >
           { item.alternativa }
         </button>
@@ -101,6 +121,7 @@ class Game extends Component {
   };
 
   handleNext = () => {
+    clearInterval(downloadTimer);
     this.setState((prev) => {
       let nextCurrent;
       if (prev.currentQuestion < prev.questionsLength - 1) {
@@ -114,24 +135,27 @@ class Game extends Component {
         currentQuestion: nextCurrent,
       });
     });
+    this.counter();
   };
 
+  goToFeedback = () => {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
   render() {
-    const { questions, score } = this.props;
-    const { questionsLength, currentQuestion, control } = this.state;
+    const { questions } = this.props;
+    const { questionsLength, currentQuestion, control, counter } = this.state;
+    const lastQuestion = 4;
     return (
       <div>
         <Header />
         <div>Game</div>
-        <p>
-          Placar:
-          {' '}
-          { score }
-        </p>
         <div>
           { questionsLength > 0
           && (
             <>
+              <h2>{ counter }</h2>
               <div>
                 <p
                   data-testid="question-category"
@@ -158,7 +182,8 @@ class Game extends Component {
             && (
               <button
                 data-testid="btn-next"
-                onClick={ this.handleNext }
+                onClick={ currentQuestion === lastQuestion
+                  ? this.goToFeedback : this.handleNext }
                 type="button"
               >
                 Next
@@ -184,5 +209,4 @@ Game.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   dispatch: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any.isRequired).isRequired,
-  score: PropTypes.number.isRequired,
 };
