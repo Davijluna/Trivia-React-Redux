@@ -138,9 +138,15 @@ class Game extends Component {
     this.counter();
   };
 
+  goToFeedback = () => {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
   render() {
     const { questions } = this.props;
     const { questionsLength, currentQuestion, control, counter } = this.state;
+    const lastQuestion = 4;
     return (
       <div>
         <Header />
@@ -176,7 +182,8 @@ class Game extends Component {
             && (
               <button
                 data-testid="btn-next"
-                onClick={ this.handleNext }
+                onClick={ currentQuestion === lastQuestion
+                  ? this.goToFeedback : this.handleNext }
                 type="button"
               >
                 Next
