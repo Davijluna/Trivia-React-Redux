@@ -43,7 +43,7 @@ class Game extends Component {
 
   handleClick = (testId, difficulty) => {
     const { dispatch } = this.props;
-    // const timer = 15; // Alterar depois para o valor do timer real
+    // const timer = 15; // Alterar depois para o valor do timer reall
     const { counter } = this.state;
     this.setState({ control: true });
 
