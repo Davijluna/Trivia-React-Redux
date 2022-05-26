@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions, addScore } from '../redux/actions';
 
+let downloadTimer;
+
 class Game extends Component {
   constructor() {
     super();
@@ -12,15 +14,31 @@ class Game extends Component {
       currentQuestion: 0,
       control: false,
       position: -1,
+      disableButtons: false,
+      counter: 0,
     };
   }
 
   async componentDidMount() {
     const { dispatch, history } = this.props;
-    dispatch(await getQuestions(history));
+    dispatch(await getQuestions(history), this.counter());
     const { questions } = this.props;
     const number = this.randomNumber();
     this.setState({ questionsLength: questions.length, position: number });
+  }
+
+  counter = () => {
+    const miliseconds = 1000;
+    const time = { timeleft: 30 };
+    downloadTimer = setInterval(() => {
+      if (time.timeleft === 0) {
+        clearInterval(downloadTimer);
+        this.setState({ disableButtons: true });
+      }
+      this.setState({ counter: time.timeleft });
+      time.timeleft -= 1;
+    }, miliseconds);
+    return downloadTimer;
   }
 
   handleClick = (testId, difficulty) => {
@@ -74,7 +92,7 @@ class Game extends Component {
   };
 
   randomAlternativas = (incorretas, certa, difficulty) => {
-    const { position } = this.state;
+    const { position, disableButtons } = this.state;
 
     const response = incorretas.map((alternativa, index) => (
       {
@@ -93,6 +111,7 @@ class Game extends Component {
           type="button"
           onClick={ () => this.handleClick(item.testId, difficulty) }
           className={ classNameItem }
+          disabled={ disableButtons }
         >
           { item.alternativa }
         </button>
@@ -101,6 +120,7 @@ class Game extends Component {
   };
 
   handleNext = () => {
+    clearInterval(downloadTimer);
     this.setState((prev) => {
       let nextCurrent;
       if (prev.currentQuestion < prev.questionsLength - 1) {
@@ -114,11 +134,12 @@ class Game extends Component {
         currentQuestion: nextCurrent,
       });
     });
+    this.counter();
   };
 
   render() {
     const { questions, score } = this.props;
-    const { questionsLength, currentQuestion, control } = this.state;
+    const { questionsLength, currentQuestion, control, counter } = this.state;
     return (
       <div>
         <Header />
@@ -132,6 +153,7 @@ class Game extends Component {
           { questionsLength > 0
           && (
             <>
+              <h2>{ counter }</h2>
               <div>
                 <p
                   data-testid="question-category"
