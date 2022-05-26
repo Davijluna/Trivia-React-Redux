@@ -17,10 +17,10 @@ const reducer = (state = INITIAL_STATE, action) => {
         name: action.payload.name,
         gravatarEmail: action.payload.email } };
   case 'ADD_SCORE':
-    console.log(action.payload);
     return { ...state,
       player: { ...state.player,
-        score: state.player.score + action.payload } };
+        score: state.player.score + action.payload,
+        assertions: state.player.assertions + 1 } };
   default:
     return state;
   }

@@ -1,9 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+
+import Hearder from '../components/Header';
 
 class Feedback extends React.Component {
+  FeedbackMessage = () => {
+    const { assertions } = this.props;
+    const condition = 3;
+    if (assertions < condition) {
+      return 'Could be better...';
+    }
+    return 'Well Done!';
+  }
+
   handlePlayAgain = () => {
     const { history } = this.props;
     history.push('/');
@@ -15,10 +25,20 @@ class Feedback extends React.Component {
   };
 
   render() {
+    const { score, assertions } = this.props;
     return (
+
       <div>
-        <h1 data-testid="feedback-text">Feedback</h1>
-        <Header />
+        <Hearder />
+        <h2 data-testid="feedback-text">{ this.FeedbackMessage() }</h2>
+
+        <div>
+          Pontuação:
+          <span data-testid="feedback-total-score">{ score }</span>
+        </div>
+        <div>
+          <span data-testid="feedback-total-question">{ assertions }</span>
+        </div>
         <button
           data-testid="btn-play-again"
           onClick={ this.handlePlayAgain }
@@ -34,12 +54,20 @@ class Feedback extends React.Component {
           Ranking
         </button>
       </div>
+
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  score: state.player.score,
+  assertions: state.player.assertions,
+});
+
 Feedback.propTypes = {
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
-export default connect()(Feedback);
+export default connect(mapStateToProps)(Feedback);
