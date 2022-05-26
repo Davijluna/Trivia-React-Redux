@@ -1,3 +1,8 @@
+export const actionsSetUrlProfile = (data) => ({
+  type: 'SET_URL_PROFILE',
+  payload: data,
+});
+
 export const actionGetQuestions = (data) => ({
   type: 'GET_QUESTIONS',
   payload: data,
@@ -12,6 +17,10 @@ export const addScore = (data) => ({
   type: 'ADD_SCORE',
   payload: data,
 });
+
+export const actionRestart = () => ({
+  type: 'RESTART',
+})
 
 const getToken = async () => {
   const apiToken = await fetch('https://opentdb.com/api_token.php?command=request');
