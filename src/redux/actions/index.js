@@ -8,6 +8,11 @@ export const actionSetUser = (data) => ({
   payload: data,
 });
 
+export const addScore = (data) => ({
+  type: 'ADD_SCORE',
+  payload: data,
+});
+
 const getToken = async () => {
   const apiToken = await fetch('https://opentdb.com/api_token.php?command=request');
   const apiTokenJson = await apiToken.json();
