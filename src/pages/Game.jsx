@@ -43,7 +43,8 @@ class Game extends Component {
 
   handleClick = (testId, difficulty) => {
     const { dispatch } = this.props;
-    const timer = 15; // Alterar depois para o valor do timer real
+    // const timer = 15; // Alterar depois para o valor do timer real
+    const { counter } = this.state;
     this.setState({ control: true });
 
     const fixedNumber = 10;
@@ -54,13 +55,13 @@ class Game extends Component {
     if (testId.includes('correct')) { // Caso selecione a resposta correta entra no SWITCH abaixo
       switch (difficulty) {
       case 'easy':
-        dispatch(addScore(fixedNumber + (timer * easy)));
+        dispatch(addScore(fixedNumber + (counter * easy)));
         break;
       case 'medium':
-        dispatch(addScore(fixedNumber + (timer * medium)));
+        dispatch(addScore(fixedNumber + (counter * medium)));
         break;
       case 'hard':
-        dispatch(addScore(fixedNumber + (timer * hard)));
+        dispatch(addScore(fixedNumber + (counter * hard)));
         break;
       default:
         return null;
@@ -138,17 +139,12 @@ class Game extends Component {
   };
 
   render() {
-    const { questions, score } = this.props;
+    const { questions } = this.props;
     const { questionsLength, currentQuestion, control, counter } = this.state;
     return (
       <div>
         <Header />
         <div>Game</div>
-        <p>
-          Placar:
-          {' '}
-          { score }
-        </p>
         <div>
           { questionsLength > 0
           && (
@@ -206,5 +202,4 @@ Game.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   dispatch: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any.isRequired).isRequired,
-  score: PropTypes.number.isRequired,
 };
