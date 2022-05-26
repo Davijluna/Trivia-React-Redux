@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 class Feedback extends React.Component {
   handlePlayAgain = () => {
@@ -11,10 +12,12 @@ class Feedback extends React.Component {
   render() {
     return (
       <div>
+        <Header />
         <h1 data-testid="feedback-text">Feedback</h1>
         <button
           data-testid="btn-play-again"
           onClick={ this.handlePlayAgain }
+          type="button"
         >
           Play Again
         </button>
