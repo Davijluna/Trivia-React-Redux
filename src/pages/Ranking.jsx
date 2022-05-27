@@ -11,16 +11,6 @@ class Ranking extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    // let ranking;
-    // if (localStorage.getItem('ranking') && localStorage.getItem('ranking') !== '') {
-    //   ranking = await JSON.parse(localStorage.getItem('ranking'));
-    // } else {
-    //   ranking = [];
-    // }
-    // this.setState({ rankingList: ranking });
-  }
-
   goToHome = () => {
     const { history, dispatch } = this.props;
     dispatch({
