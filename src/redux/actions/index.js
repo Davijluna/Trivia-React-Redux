@@ -20,7 +20,7 @@ export const addScore = (data) => ({
 
 export const actionRestart = () => ({
   type: 'RESTART',
-})
+});
 
 const getToken = async () => {
   const apiToken = await fetch('https://opentdb.com/api_token.php?command=request');

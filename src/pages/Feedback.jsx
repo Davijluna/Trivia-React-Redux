@@ -12,23 +12,21 @@ class Feedback extends React.Component {
       name,
       score,
       picture: url,
-    }
+    };
+
     if (localStorage.getItem('ranking') && localStorage.getItem('ranking') !== '') {
       const oldRanking = [...await JSON.parse(localStorage.getItem('ranking')), userData];
-      const sortRanking = oldRanking.sort((a, b) => b.score - a.score);
-
-      localStorage.setItem('ranking', JSON.stringify(sortRanking));
+      const arrSemRepetido = oldRanking.filter((player) => player.name !== name);
+      const playerRepetido = oldRanking.find((player) => player.name === name);
+      playerRepetido.score = score;
+      playerRepetido.name = name;
+      arrSemRepetido.push(playerRepetido);
+      console.log(arrSemRepetido);
+      // const sortRanking = arrSemRepetido.sort((a, b) => b.score - a.score);
+      localStorage.setItem('ranking', JSON.stringify(arrSemRepetido));
     } else {
       localStorage.setItem('ranking', JSON.stringify([userData]));
     }
-    // scoreLocalStorage = (score) => {
-    //   const { namePlayer } = this.props;
-    //   const allPlayers = JSON.parse(localStorage.getItem('ranking'));
-    //   const player = allPlayers.find((user) => user.name === namePlayer);
-    //   player.score = score;
-    //   allPlayers[0] = player;
-    //   localStorage.setItem('ranking', JSON.stringify(allPlayers));
-    // };
   }
 
   FeedbackMessage = () => {
@@ -98,6 +96,9 @@ Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   url: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+
 };
 
 export default connect(mapStateToProps)(Feedback);

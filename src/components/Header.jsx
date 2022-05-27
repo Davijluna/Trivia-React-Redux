@@ -48,4 +48,5 @@ Header.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };

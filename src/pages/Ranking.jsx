@@ -6,21 +6,26 @@ class Ranking extends React.Component {
   constructor() {
     super();
     this.state = {
-      rankingList: [],
-    }
+      rankingList: JSON.parse(localStorage.getItem('ranking'))
+        .sort((a, b) => b.score - a.score) || [],
+    };
   }
+
   async componentDidMount() {
-    let ranking;
-    if (localStorage.getItem('ranking') && localStorage.getItem('ranking') !== '') {
-      ranking = await JSON.parse(localStorage.getItem('ranking'));
-    } else {
-      ranking = [];
-    }
-    this.setState({ rankingList: ranking });
-  };
+    // let ranking;
+    // if (localStorage.getItem('ranking') && localStorage.getItem('ranking') !== '') {
+    //   ranking = await JSON.parse(localStorage.getItem('ranking'));
+    // } else {
+    //   ranking = [];
+    // }
+    // this.setState({ rankingList: ranking });
+  }
 
   goToHome = () => {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
+    dispatch({
+      type: 'RESET_INFO',
+    });
     history.push('/');
   }
 
@@ -39,8 +44,7 @@ class Ranking extends React.Component {
           </button>
         </div>
         <div>
-          { rankingList
-          && rankingList.map(({ name, score, picture }, index) => (
+          { rankingList.map(({ name, score, picture }, index) => (
             <div key={ index }>
               <img src={ picture } alt={ name } />
               <p data-testid={ `player-name-${index}` }>{ name }</p>
@@ -55,6 +59,7 @@ class Ranking extends React.Component {
 
 Ranking.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(Ranking);

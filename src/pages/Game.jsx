@@ -22,7 +22,7 @@ class Game extends Component {
   async componentDidMount() {
     const { dispatch, history } = this.props;
     dispatch(await getQuestions(history));
-    this.counter();
+    // this.counter();
     const { questions } = this.props;
     const number = this.randomNumber();
     this.setState({ questionsLength: questions.length, position: number });

@@ -15,7 +15,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     return { ...state,
       player: { ...state.player,
         score: 0,
-        assertions: 0 }};
+        assertions: 0 } };
   case 'GET_USER':
     return { ...state,
       player: { ...state.player,
@@ -30,6 +30,14 @@ const reducer = (state = INITIAL_STATE, action) => {
     return { ...state,
       player: { ...state.player,
         url: action.payload,
+      } };
+  case 'RESET_INFO':
+    return { ...state,
+      player: {
+        name: '',
+        gravatarEmail: '',
+        score: 0,
+        assertions: 0,
       } };
   default:
     return state;
