@@ -11,6 +11,11 @@ const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'GET_QUESTIONS':
     return { ...state, questions: action.payload };
+  case 'RESTART':
+    return { ...state,
+      player: { ...state.player,
+        score: 0,
+        assertions: 0 } };
   case 'GET_USER':
     return { ...state,
       player: { ...state.player,
@@ -21,6 +26,19 @@ const reducer = (state = INITIAL_STATE, action) => {
       player: { ...state.player,
         score: state.player.score + action.payload,
         assertions: state.player.assertions + 1 } };
+  case 'SET_URL_PROFILE':
+    return { ...state,
+      player: { ...state.player,
+        url: action.payload,
+      } };
+  case 'RESET_INFO':
+    return { ...state,
+      player: {
+        name: '',
+        gravatarEmail: '',
+        score: 0,
+        assertions: 0,
+      } };
   default:
     return state;
   }
