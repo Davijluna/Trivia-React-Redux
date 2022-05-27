@@ -1,37 +1,58 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import React from 'react';
 import App from '../App';
-import fetchMock from 'fetch-mock-jest';
+import { questionsResponse } from '../../cypress/mocks/questions';
+
+const INITIAL_STATE = {
+  player: {
+    name: '',
+    gravatarEmail: '',
+    score: 0,
+    assertions: 0,
+  },
+  questions: questionsResponse.results,
+};
 
 describe('Testes da página de jogo', () => {
+  test('inicio', async () => {
+    const { history, store, debug } = renderWithRouterAndRedux(<App />, INITIAL_STATE, '/game');
+    const { pathname } = history.location;
+    expect(pathname).toBe('/game');
+
+  });
   test('Se os elementos estao sendo exibidos na tela', async () => {
 
-    const { history, store, debug } = renderWithRouterAndRedux(<App />);
-    history.push('/game');
-    global.fetch = (url) => {
-      return Promise.resolve({
-        json: () => Promise.resolve(
-          ([
-            {
-              "category": "Science: Computers",
-              "type": "boolean",
-              "difficulty": "medium",
-              "question": "The common software-programming acronym &quot;I18N&quot; comes from the term &quot;Interlocalization&quot;.",
-              "correct_answer": "False",
-              "incorrect_answers": [
-                "True"
-              ]
-            }
-          ])
-        )
-      })
-    }
+    const { history, store, debug } = renderWithRouterAndRedux(<App />, INITIAL_STATE, '/game');
 
-    debug();
-    const question = await screen.findByText(/The common/i);
-    expect(question).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId('question-category')).toBeInTheDocument() , {timeout: 3000}); //wrong-answer-
+    expect(screen.getByTestId('question-text')).toBeInTheDocument();
 
+    let btnWrong = screen.getByTestId('wrong-answer-0');
+    expect(btnWrong).toBeInTheDocument();
+    userEvent.click(btnWrong);        
+    userEvent.click(screen.getByTestId('btn-next'));
+
+    btnWrong = screen.getByTestId('wrong-answer-0');
+    userEvent.click(btnWrong);
+    userEvent.click(screen.getByTestId('btn-next'));
+    btnWrong = screen.getByTestId('wrong-answer-0');
+    userEvent.click(btnWrong);
+    userEvent.click(screen.getByTestId('btn-next'));
+    btnWrong = screen.getByTestId('wrong-answer-0');
+    userEvent.click(btnWrong);
+    userEvent.click(screen.getByTestId('btn-next'));
+    btnWrong = screen.getByTestId('wrong-answer-0');
+    userEvent.click(btnWrong);
+    userEvent.click(screen.getByTestId('btn-next'));
+
+    
+    const { pathname } = history.location;
+    expect(pathname).toBe('/feedback');
+
+
+
+    
   }) 
 })
