@@ -70,8 +70,6 @@ class Game extends Component {
     }
   };
 
-  // changeBorder = (classItem) => classItem;
-
   randomNumber = () => {
     const { position } = this.state;
     const POSITION_STARTER = -1;
@@ -136,7 +134,6 @@ class Game extends Component {
         currentQuestion: nextCurrent,
       });
     });
-    // this.counter();
   };
 
   goToFeedback = () => {
