@@ -4,7 +4,6 @@ import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import React from 'react';
 import App from '../App';
 import { questionsResponse } from '../../cypress/mocks/questions';
-const test = require('../pages/Game');
 
 const INITIAL_STATE = {
   player: {
