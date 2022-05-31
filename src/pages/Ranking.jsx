@@ -7,7 +7,7 @@ class Ranking extends React.Component {
     super();
     this.state = {
       rankingList: JSON.parse(localStorage.getItem('ranking'))
-        .sort((a, b) => b.score - a.score) || [],
+        .sort((a, b) => b.score - a.score),
     };
   }
 

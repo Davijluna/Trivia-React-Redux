@@ -15,7 +15,7 @@ class Game extends Component {
       control: false,
       position: -1,
       disableButtons: false,
-      counter: 0,
+      counter: 30,
     };
   }
 
@@ -125,8 +125,6 @@ class Game extends Component {
       let nextCurrent;
       if (prev.currentQuestion < prev.questionsLength - 1) {
         nextCurrent = prev.currentQuestion + 1;
-      } else {
-        nextCurrent = 0;
       }
       return ({
         control: false,
@@ -153,7 +151,7 @@ class Game extends Component {
           { questionsLength > 0
           && (
             <>
-              <h2>{ counter }</h2>
+              <h2 data-testid="counter">{ counter }</h2>
               <div>
                 <p
                   data-testid="question-category"
